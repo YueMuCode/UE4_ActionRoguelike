@@ -7,6 +7,7 @@
 #include "GameFramework/CharactermovementComponent.h"
 #include  "MyInteractionActorComponent.h"
 #include "DrawDebugHelpers.h"
+#include "MyAtttributeComponent.h"
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
@@ -18,6 +19,8 @@ AMyCharacter::AMyCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraofPlayer");
 	CameraComp->SetupAttachment(springArmComp);
 	
+	AtttributeComp = CreateDefaultSubobject<UMyAtttributeComponent>("AttributeComp");
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;//玩家的面向跟随移动的方向
 	bUseControllerRotationYaw = false;//？
 
@@ -99,10 +102,14 @@ void AMyCharacter::Attack1()
 
 void AMyCharacter::Attack_TimeElapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	if (ensure(ProjectileClass))//ensure的作用就是：如果为真正常运行，如果为假他会自动跳到这里提示为空，
+	{
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+		FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
+		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	}
+	
 } 

@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UMyInteractionActorComponent;
 class UAnimMontage;
+class UMyAtttributeComponent;
 UCLASS()
 class ROGUELIKE_API AMyCharacter : public ACharacter
 {
@@ -32,6 +33,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UMyInteractionActorComponent *InteractionComp;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Attribute")
+	UMyAtttributeComponent* AtttributeComp;
+
 
 	UPROPERTY(EditAnywhere,Category="Attack")
 	UAnimMontage* attackanim;
